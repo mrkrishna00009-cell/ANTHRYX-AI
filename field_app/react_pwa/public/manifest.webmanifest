@@ -1,0 +1,11 @@
+{
+  "name": "ANTHRYX Field",
+  "short_name": "ANTHRYX",
+  "description": "Offline-first field evidence capture for coal mine inspections",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#14365C",
+  "orientation": "portrait",
+  "icons": []
+}

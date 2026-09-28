@@ -1,0 +1,94 @@
+{
+ "threshold_used": 0.482,
+ "threshold_selection": "F1-maximizing threshold chosen on VALIDATION predictions only; test set never used to select it",
+ "roc_auc": 0.8803,
+ "pr_auc": 0.7794,
+ "precision": 0.723,
+ "recall": 0.6345,
+ "f1": 0.6758,
+ "confusion_matrix": {
+  "labels": [
+   "negative",
+   "positive"
+  ],
+  "matrix": [
+   [
+    1284,
+    141
+   ],
+   [
+    212,
+    368
+   ]
+  ],
+  "tn": 1284,
+  "fp": 141,
+  "fn": 212,
+  "tp": 368
+ },
+ "brier_score": 0.1224,
+ "calibration_reliability_deciles": [
+  {
+   "bin": 0,
+   "n": 201,
+   "mean_predicted": 0.023,
+   "observed_positive_rate": 0.01
+  },
+  {
+   "bin": 1,
+   "n": 200,
+   "mean_predicted": 0.0465,
+   "observed_positive_rate": 0.015
+  },
+  {
+   "bin": 2,
+   "n": 201,
+   "mean_predicted": 0.0808,
+   "observed_positive_rate": 0.0498
+  },
+  {
+   "bin": 3,
+   "n": 200,
+   "mean_predicted": 0.1129,
+   "observed_positive_rate": 0.07
+  },
+  {
+   "bin": 4,
+   "n": 200,
+   "mean_predicted": 0.165,
+   "observed_positive_rate": 0.15
+  },
+  {
+   "bin": 5,
+   "n": 201,
+   "mean_predicted": 0.2417,
+   "observed_positive_rate": 0.2537
+  },
+  {
+   "bin": 6,
+   "n": 200,
+   "mean_predicted": 0.3441,
+   "observed_positive_rate": 0.315
+  },
+  {
+   "bin": 7,
+   "n": 201,
+   "mean_predicted": 0.4947,
+   "observed_positive_rate": 0.4876
+  },
+  {
+   "bin": 8,
+   "n": 200,
+   "mean_predicted": 0.6951,
+   "observed_positive_rate": 0.63
+  },
+  {
+   "bin": 9,
+   "n": 201,
+   "mean_predicted": 0.9194,
+   "observed_positive_rate": 0.9104
+  }
+ ],
+ "test_n": 2005,
+ "test_positive": 580
+}

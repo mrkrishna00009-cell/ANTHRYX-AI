@@ -1,0 +1,56 @@
+# ANTHRYX AI local stack.
+# AUTHORED ONLY - not built or run in the development sandbox, which has no
+# Docker daemon. Verify on a machine with Docker before relying on it.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-anthryx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-anthryx}
+    ports:
+      - "5432:5432"
+    volumes:
+      - anthryx_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-anthryx}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-anthryx}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-anthryx}
+      ALLOW_SQLITE_FALLBACK: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      ANTHRYX_API_BASE_URL: http://api:8000
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+    working_dir: /app/dashboard/streamlit
+    command: ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+volumes:
+  anthryx_pgdata:

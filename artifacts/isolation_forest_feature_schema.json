@@ -1,0 +1,20 @@
+{
+ "feature_order": [
+  "methane_pct",
+  "co_ppm",
+  "airflow_m3s"
+ ],
+ "units": {
+  "methane_pct": "%",
+  "co_ppm": "ppm",
+  "airflow_m3s": "m3/s"
+ },
+ "provenance": "SIMULATED - no physical sensor connected",
+ "model_class": "IsolationForest",
+ "vocabulary": "anomaly_score (decision_function output); is_anomaly (predict()==-1). NEVER accident probability. Separate from M3 in artifact, table, vocabulary and UI surface.",
+ "hyperparameters": {
+  "n_estimators": 200,
+  "contamination": 0.07,
+  "random_state": 42
+ }
+}

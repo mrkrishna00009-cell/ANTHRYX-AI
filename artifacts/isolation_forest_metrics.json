@@ -1,0 +1,14 @@
+{
+ "algorithm": "IsolationForest",
+ "provenance": "SIMULATED",
+ "note": "This is NOT a supervised classification metric. IsolationForest is unsupervised; 'true_anomaly' labels exist only because this training data is simulated by two generators, and are used here only to sanity-check the simulator, never to train the model and never presented as an accident-risk metric.",
+ "n_train": 2150,
+ "contamination_param": 0.07,
+ "recall_on_simulated_anomalous_generator": 0.84,
+ "decision_function_range": [
+  -0.1842,
+  0.1893
+ ],
+ "random_seed": 42,
+ "simulator_seed": 20260101
+}

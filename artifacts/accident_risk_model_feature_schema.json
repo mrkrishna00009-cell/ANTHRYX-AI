@@ -1,0 +1,63 @@
+{
+ "feature_order_msha_training": [
+  "violations_last_12m",
+  "ss_violations_last_12m",
+  "repeat_violation_ratio",
+  "days_since_last_inspection",
+  "inspection_hours_last_12m",
+  "avg_penalty_amount",
+  "mine_size_avg_employees",
+  "production_hours_msha_reference_only",
+  "mine_type_binary"
+ ],
+ "feature_order_indian_deployable": [
+  "violations_last_12m",
+  "ss_violations_last_12m",
+  "repeat_violation_ratio",
+  "days_since_last_inspection",
+  "inspection_hours_last_12m",
+  "mine_size_avg_employees",
+  "mine_type_binary"
+ ],
+ "mine_type_encoding": {
+  "UNDERGROUND": 1.0,
+  "OPENCAST": 0.0
+ },
+ "missing_value_policy": "NaN passed natively to the model; NEVER imputed",
+ "scaling": "NONE - tree-based model requires no feature scaling",
+ "label_encoding": {
+  "POSITIVE": 1,
+  "NEGATIVE": 0,
+  "INDETERMINATE": "EXCLUDED from training entirely"
+ },
+ "model_class": "HistGradientBoostingClassifier",
+ "model_hyperparameters": {
+  "categorical_features": "from_dtype",
+  "class_weight": null,
+  "early_stopping": "auto",
+  "interaction_cst": null,
+  "l2_regularization": 0.0,
+  "learning_rate": 0.05,
+  "loss": "log_loss",
+  "max_bins": 255,
+  "max_depth": 6,
+  "max_features": 1.0,
+  "max_iter": 300,
+  "max_leaf_nodes": 31,
+  "min_samples_leaf": 20,
+  "monotonic_cst": null,
+  "n_iter_no_change": 10,
+  "random_state": 42,
+  "scoring": "loss",
+  "tol": 1e-07,
+  "validation_fraction": 0.1,
+  "verbose": 0,
+  "warm_start": false
+ },
+ "random_seed": 42,
+ "deployable_blocked_features": {
+  "production_hours_msha_reference_only": "US-manshift-derived MSHA reference value; no B' parameter resolved for Indian units",
+  "avg_penalty_amount": "USD-denominated, MSHA regulatory-regime specific; no currency/regime conversion policy exists"
+ },
+ "deployable_blocked_policy": "Both blocked features are forced to NaN unconditionally in deployable/Indian scoring mode, never accepted as a caller-supplied value and never imputed. The model itself is NOT retrained - it still expects all 9 MSHA-training columns; the blocked columns are nulled at inference time, not dropped."
+}
