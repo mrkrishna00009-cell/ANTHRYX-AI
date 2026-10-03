@@ -644,8 +644,11 @@ def test_full_m5_simulator_to_anomaly_to_capa_to_audit(client, seeded, admin_hea
 # ---------------------------------------------------------------- PART H: bootstrap idempotency
 def test_bootstrap_demo_idempotent(client):
     import sys
-    sys.path.insert(0, "/home/claude/anthryx_ai/scripts")
-    sys.path.insert(0, "/home/claude/anthryx_ai")
+    from pathlib import Path
+
+    REPO = Path(__file__).resolve().parents[2]
+    sys.path.insert(0, str(REPO / "scripts"))
+    sys.path.insert(0, str(REPO))
     import importlib
     bootstrap_demo = importlib.import_module("bootstrap_demo")
 

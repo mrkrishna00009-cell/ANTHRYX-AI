@@ -9,6 +9,8 @@ light and dark without page-specific overrides.
 """
 from __future__ import annotations
 
+from html import escape
+
 import streamlit as st
 
 
@@ -42,6 +44,31 @@ def kpi_row(items: list[dict], theme: dict) -> None:
             """,
             unsafe_allow_html=True,
         )
+
+
+def overview_kpi_grid(items: list[dict], theme: dict) -> None:
+    """Render compact Overview-only KPI cards from existing page values."""
+    tone_colors = {
+        "neutral": theme["ACCENT"], "good": theme["RISK"]["LOW"],
+        "warn": theme["RISK"]["MEDIUM"], "high": theme["RISK"]["HIGH"],
+        "bad": theme["RISK"]["CRITICAL"],
+    }
+    cards = []
+    for item in items:
+        color = tone_colors.get(item.get("tone", "neutral"), theme["ACCENT"])
+        cards.append(
+            f'<article class="overview-kpi" style="--kpi-tone:{color}">'
+            f'<div class="overview-kpi-top"><span class="overview-kpi-label">'
+            f'{escape(str(item["label"]))}</span>'
+            f'<span class="overview-kpi-status"><i></i>{escape(str(item["status"]))}</span></div>'
+            f'<strong class="overview-kpi-value">{escape(str(item["value"]))}</strong>'
+            f'<p class="overview-kpi-support">{escape(str(item["support"]))}</p>'
+            "</article>"
+        )
+    st.markdown(
+        f'<div class="overview-kpi-grid">{"".join(cards)}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def section_header(title: str, caption: str | None, theme: dict) -> None:

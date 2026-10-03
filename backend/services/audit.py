@@ -67,7 +67,11 @@ def compute_row_hash(
         action,
         entity_type,
         entity_id or "",
-        timestamp.astimezone(timezone.utc).isoformat(),
+        (
+    timestamp.replace(tzinfo=timezone.utc)
+    if timestamp.tzinfo is None
+    else timestamp.astimezone(timezone.utc)
+).isoformat(),
         payload_json,
         prev_hash,
     ]
@@ -134,11 +138,11 @@ def verify_rows(rows: Sequence[LedgerRow]) -> ChainVerification:
         expected_seq = index + 1
         if row.seq != expected_seq:
             return ChainVerification(
-                False, index, row.seq, f"sequence gap: expected {expected_seq}"
+                False, row.seq, row.seq, f"sequence gap: expected {expected_seq}"
             )
         if row.prev_hash != expected_prev:
             return ChainVerification(
-                False, index, row.seq, "prev_hash does not match the preceding row"
+                False, row.seq, row.seq, "prev_hash does not match the preceding row"
             )
         recomputed = compute_row_hash(
             row.seq, row.actor_id, row.action, row.entity_type,
@@ -146,7 +150,7 @@ def verify_rows(rows: Sequence[LedgerRow]) -> ChainVerification:
         )
         if recomputed != row.row_hash:
             return ChainVerification(
-                False, index, row.seq, "row_hash does not match the row contents"
+                False, row.seq, row.seq, "row_hash does not match the row contents"
             )
         expected_prev = row.row_hash
     return ChainVerification(True, len(rows))

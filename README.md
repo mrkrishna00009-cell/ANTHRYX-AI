@@ -1,5 +1,17 @@
 # ANTHRYX AI
 
+## Demo Login Credentials
+
+Use these demo accounts to sign in to the dashboard:
+
+| Role | Account ID | Password |
+|---|---|---|
+| Admin | `demo.admin@example.com` | `DemoAdmin123!` |
+| Manager | `demo.manager@example.com` | `DemoManager123!` |
+| Inspector | `demo.inspector@example.com` | `DemoInspector123!` |
+
+These accounts are created by `scripts/bootstrap_demo.py`.
+
 Governance and compliance platform for coal mines.
 Smart India Hackathon 2026, problem statement **SIH26024**. Team **DATA_HELIX**.
 

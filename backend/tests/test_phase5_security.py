@@ -6,6 +6,7 @@ SQLAlchemy models. No mocked security boundary - a bypass here would be
 a bypass in the real app.
 """
 import io
+from pathlib import Path
 import time
 import uuid
 
@@ -196,7 +197,8 @@ def test_unhandled_error_never_leaks_stack_trace(client, admin_headers, monkeypa
 
 # ---------------------------------------------------------------- SECRET LEAKAGE
 def test_env_example_contains_no_real_secret():
-    content = open("/home/claude/anthryx_ai/.env.example").read()
+    from pathlib import Path
+    content = (Path(__file__).resolve().parents[2] / ".env.example").read_text()
     assert "JWT_SECRET=" in content
     for line in content.splitlines():
         if line.startswith("JWT_SECRET="):
@@ -205,13 +207,13 @@ def test_env_example_contains_no_real_secret():
 
 
 def test_no_hardcoded_bhashini_key_in_source():
-    import subprocess
-    result = subprocess.run(
-        ["grep", "-rn", "-E", r"bhashini_api_key\s*[:=]\s*[\"'][A-Za-z0-9]{10,}",
-         "/home/claude/anthryx_ai/backend"],
-        capture_output=True, text=True,
-    )
-    assert result.stdout.strip() == ""
+    from pathlib import Path
+
+    backend_dir = Path(__file__).resolve().parents[1]
+
+    for path in backend_dir.rglob("*.py"):
+        content = path.read_text(encoding="utf-8", errors="ignore")
+        assert "bhashini_api_key" not in content.lower()
 
 
 def test_health_endpoint_does_not_leak_jwt_secret(client):
