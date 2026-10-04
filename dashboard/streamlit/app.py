@@ -14,6 +14,7 @@ would not correspond to any real permission the backend enforces.
 
 from __future__ import annotations
 
+import os
 from html import escape
 
 import streamlit as st
@@ -464,6 +465,14 @@ DEMO_ACCOUNTS = {
     "Admin": "demo.admin@example.com",
     "Manager": "demo.manager@example.com",
     "Inspector": "demo.inspector@example.com",
+}
+DEMO_PASSWORDS = {
+    "Admin": "DemoAdmin123!",
+    "Manager": "DemoManager123!",
+    "Inspector": "DemoInspector123!",
+}
+DEMO_AUTO_LOGIN = os.getenv("ANTHRYX_DEMO_AUTO_LOGIN", "").strip().lower() in {
+    "1", "true", "yes",
 }
 
 
@@ -2915,8 +2924,23 @@ def _render_login(client: ApiClient) -> None:
 def main() -> None:
     client = _client()
     if "user" not in st.session_state:
-        _render_login(client)
-        return
+        if DEMO_AUTO_LOGIN:
+            try:
+                client.login(DEMO_ACCOUNTS["Admin"], DEMO_PASSWORDS["Admin"])
+                st.session_state.user = client.me()
+            except ApiError as exc:
+                client.token = None
+                st.title("ANTHRYX AI")
+                st.error(f"Automatic demo sign-in failed: {exc}")
+                st.caption(
+                    "Check that the backend is running and demo accounts are "
+                    "bootstrapped, or unset ANTHRYX_DEMO_AUTO_LOGIN to use "
+                    "the sign-in form."
+                )
+                st.stop()
+        else:
+            _render_login(client)
+            return
 
     user = st.session_state.user
     role = user["role"]
@@ -2934,11 +2958,12 @@ def main() -> None:
             unsafe_allow_html=True,
         )
         _theme_toggle()
-        if st.button("Switch user", use_container_width=True):
-            client.token = None
-            st.session_state.pop("user", None)
-            st.session_state.pop("dashboard_page", None)
-            st.rerun()
+        if not DEMO_AUTO_LOGIN:
+            if st.button("Switch user", use_container_width=True):
+                client.token = None
+                st.session_state.pop("user", None)
+                st.session_state.pop("dashboard_page", None)
+                st.rerun()
         st.divider()
         grouped_pages = {name for _, names in NAV_GROUPS for name in names}
         for group, names in NAV_GROUPS:

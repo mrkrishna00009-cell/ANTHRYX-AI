@@ -375,8 +375,13 @@ Health check: `curl http://localhost:8000/api/v1/health`
 ```bash
 cd dashboard/streamlit
 export ANTHRYX_API_BASE_URL=http://localhost:8000
+export ANTHRYX_DEMO_AUTO_LOGIN=true
 streamlit run app.py
 ```
+
+The local demo dashboard automatically signs in as the demo ADMIN when
+`ANTHRYX_DEMO_AUTO_LOGIN=true`; API authentication and role permissions
+remain enabled. Unset the variable to show the normal sign-in form.
 
 ## 19. How to build/run the React PWA
 

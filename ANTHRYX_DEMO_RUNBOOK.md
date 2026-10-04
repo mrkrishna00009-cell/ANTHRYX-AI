@@ -14,8 +14,11 @@ cd backend && uvicorn app.main:app --port 8000 &
 cd dashboard/streamlit && ANTHRYX_API_BASE_URL=http://localhost:8000 streamlit run app.py &
 ```
 
-Login with `demo.admin@example.com` / `DemoAdmin123!` (printed by the
-bootstrap script; two other demo roles are also created).
+For password-free local demo startup, set `ANTHRYX_DEMO_AUTO_LOGIN=true`
+before starting Streamlit; it authenticates as the demo ADMIN through the
+backend API. Otherwise, login with `demo.admin@example.com` /
+`DemoAdmin123!` (printed by the bootstrap script; two other demo roles
+are also created).
 
 ---
 
